@@ -85,6 +85,8 @@ public class Parser {
 				consume("semiColon");
 			}
 			recordJsonArray.add(json);
+			if(this.nextToken.getKind().equals("reservedWord"))
+				break;
 		}
 		if(this.nextToken.getLexeme().equals("end")) {
 			consume("reservedWord");

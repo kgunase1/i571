@@ -13,13 +13,19 @@ public class Lexer {
 
 	public static void main(String[] args) throws SyntaxError {
 		Scanner scanner = new Scanner(System.in);
-      String inputString = scanner.nextLine();
-      scanner.close();
-		List<TokenEntity> tokenEntityList = scanner(inputString);
+		StringBuilder s = new StringBuilder("\n");
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+			s.append(line).append("\n");
+        }
+        scanner.close();
+		List<TokenEntity> tokenEntityList = scanner(s.toString());
+		//List<TokenEntity> tokenEntityList = scanner(sb.toString());		
 		if(!tokenEntityList.isEmpty()) {
 			Parser parser = new Parser(tokenEntityList, tokenEntityList.get(0), 0);
 			parser.recursiveParser();
-		}
+		} else
+			System.out.println("[]");
 	}
 
 	private static List<TokenEntity> scanner(String inputString) {
