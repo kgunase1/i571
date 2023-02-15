@@ -78,7 +78,10 @@ public class Parser {
 			consume("colon");
 			if(this.peek("reservedWord") && this.nextToken.getLexeme().equals("record")) {
 				consume("reservedWord");
-				json.add(record());
+				if(this.nextToken.getKind().equals("identifier"))
+					json.add(record());
+				else
+					this.consume("identifier");
 			} else {
 				json.add(this.nextToken.getLexeme());
 				consume("reservedWord");
