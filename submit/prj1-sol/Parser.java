@@ -59,7 +59,7 @@ public class Parser {
 		  }
 	}
 	public JSONArray parse() throws SyntaxError {
-			while(this.peek("reservedWord") && this.nextToken.getLexeme().equals("var")) {
+			if(this.peek("reservedWord") && this.nextToken.getLexeme().equals("var")) {
 				consume("reservedWord");
 				jsonArray = record();
 			}
@@ -73,6 +73,9 @@ public class Parser {
 		while(!this.nextToken.getLexeme().equals("end") && 
 		!this.nextToken.getKind().equals("EOF")) {
 			JSONArray json = new JSONArray();
+			if(this.nextToken.getLexeme().equals("var")) {
+				this.consume("reservedWord");
+			}
 			json.add(this.nextToken.getLexeme());
 			consume("identifier");
 			consume("colon");
@@ -88,8 +91,6 @@ public class Parser {
 				consume("semiColon");
 			}
 			recordJsonArray.add(json);
-			if(this.nextToken.getKind().equals("reservedWord"))
-				break;
 		}
 		if(this.nextToken.getLexeme().equals("end")) {
 			consume("reservedWord");

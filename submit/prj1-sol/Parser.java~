@@ -73,20 +73,24 @@ public class Parser {
 		while(!this.nextToken.getLexeme().equals("end") && 
 		!this.nextToken.getKind().equals("EOF")) {
 			JSONArray json = new JSONArray();
+			if(this.nextToken.getLexeme().equals("var")) {
+				this.consume("reservedWord");
+			}
 			json.add(this.nextToken.getLexeme());
 			consume("identifier");
 			consume("colon");
 			if(this.peek("reservedWord") && this.nextToken.getLexeme().equals("record")) {
 				consume("reservedWord");
-				json.add(record());
+				if(this.nextToken.getKind().equals("identifier"))
+					json.add(record());
+				else
+					this.consume("identifier");
 			} else {
 				json.add(this.nextToken.getLexeme());
 				consume("reservedWord");
 				consume("semiColon");
 			}
 			recordJsonArray.add(json);
-			if(this.nextToken.getKind().equals("reservedWord"))
-				break;
 		}
 		if(this.nextToken.getLexeme().equals("end")) {
 			consume("reservedWord");
